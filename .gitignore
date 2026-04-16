@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 .DS_Store
+model_fits/**
+data_large/**
+
