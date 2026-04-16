@@ -46,6 +46,8 @@ points_joined <- bind_rows(
   })
 )
 
+#Retain a single occurrence after the spatial join
+
 write.csv(points_joined, "data_large/allocc_with_native_status.csv")
 
 #Summarize data by species

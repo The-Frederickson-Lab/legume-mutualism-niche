@@ -107,7 +107,7 @@ traits$species <- gsub(" ", "_", traits$species)
 master_legume <- left_join(summary_df, traits, multiple="any") 
 
 # Bring in tree
-mytree <- read.tree(here("phylogeny/phylogeny_buildnodes1.tre"))
+mytree <- read.tree(here("phylogeny/phylogeny_polytomy_removed.tre"))
 
 # make rows in data match rows in tree
 data <- master_legume[match(mytree$tip.label, master_legume$species),]
