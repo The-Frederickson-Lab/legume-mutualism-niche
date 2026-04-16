@@ -45,6 +45,8 @@ points_joined <- bind_rows(
   })
 )
 
+write.csv(points_joined, "data_large/allocc_with_native_status.csv")
+
 #Summarize data by species
 summary_spatial_df <- points_joined %>% 
   st_drop_geometry() %>%
