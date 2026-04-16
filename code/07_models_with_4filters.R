@@ -9,6 +9,7 @@ library(ape)
 library(phytools)
 library(nlme)
 library(ggeffects)
+library(ggtree)
 
 #Read in thinned occurrence data with climate, nitrogen, and biome data
 points <- read.csv(here("data_large/allocc_thinned_env.csv"))
@@ -133,6 +134,28 @@ data$abs_med_lat <- abs(data$median_lat)
 
 #Drop rows with any NA values (required by GLS models?)
 data <- data %>% drop_na()
+
+# Make tree figure
+p <- ggtree(mytree, alpha=0.5, layout="circ")
+
+#Discrete traits
+tree_data_1 <- as.data.frame(data[,c("species", "EFN", "fixer")])
+rownames(tree_data_1) <- tree_data_1[, c("species")]
+tree_data_1 <- tree_data_1[,-1]
+
+#Continuous traits
+tree_data_2 <- as.data.frame(data[,c("species", "precip_range", "temp_range", "nitro_range")])
+rownames(tree_data_2) <- tree_data_2[, c("species")]
+tree_data_2 <- tree_data_2[,-1]
+
+tree_data_1$EFN <- as.factor(tree_data_1$EFN)
+tree_data_1$fixer <- as.factor(tree_data_1$fixer)
+
+hm <- gheatmap(p, data = tree_data_1, offset=.8, width=.2, colnames_angle=95, colnames_offset_y = .25) +
+  scale_fill_viridis_d(option="D", name="discrete\nvalue")
+
+
+
 
 # PGLS for precip range ----
 set.seed(10)

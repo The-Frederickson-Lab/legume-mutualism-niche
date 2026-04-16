@@ -1,7 +1,6 @@
 #Packages
 library(tidyverse)
 library(cowplot)
-library(ggplot2)
 library(raster)
 library(sf)
 library(terra)
