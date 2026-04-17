@@ -10,6 +10,7 @@ library(phytools)
 library(nlme)
 library(ggeffects)
 library(ggtree)
+library(ggnewscale)
 
 #Read in thinned occurrence data with climate, nitrogen, and biome data
 points <- read.csv(here("data_large/allocc_thinned_env.csv"))
@@ -46,12 +47,32 @@ points_joined <- bind_rows(
   })
 )
 
-#Retain a single occurrence after the spatial join
+#Sometimes each occurrence matches more than one spatial polygon
+#Some polygons overlap slightly, generating this issue
+#We want to retain a single occurrence after the spatial join, so we will simply retain only
+#the variables of interest and remove duplicates
+points_joined_cleaned <- points_joined[, c("species", "temp", "precip", "nitrogen", "biome", "point_ID", "intrdcd", "spcs_nm", "geometry")]
+points_joined_cleaned <- points_joined_cleaned[!duplicated(points_joined_cleaned), ]
 
-write.csv(points_joined, "data_large/allocc_with_native_status.csv")
+#This leaves 317 occurrences that are classified as within BOTH one or more polygons where the species is "native" 
+#AND one or more polygons where the species is "introduced"
+#Let's set the introduction status to NA for these occurrences, since it is ambiguous
+#And then drop duplicates again
+
+#First find the IDs of these occurrences
+duplicates <- points_joined_cleaned %>% st_drop_geometry() %>% group_by(point_ID) %>% filter(n()>=2) %>% distinct(point_ID)
+
+#Set their introduction status to NA
+points_joined_cleaned$intrdcd <- ifelse(points_joined_cleaned$point_ID %in% duplicates$point_ID, NA, points_joined_cleaned$intrdcd)
+
+#Remove duplicated rows
+points_joined_cleaned <- points_joined_cleaned[!duplicated(points_joined_cleaned), ]
+
+#Save the dataset
+write.csv(points_joined_cleaned, "data_large/allocc_with_native_status.csv")
 
 #Summarize data by species
-summary_spatial_df <- points_joined %>% 
+summary_spatial_df <- points_joined_cleaned %>% 
   st_drop_geometry() %>%
   group_by(species) %>% 
   summarize(n_occ=n(), 
@@ -59,23 +80,20 @@ summary_spatial_df <- points_joined %>%
             n_match_polygon = sum(!is.na(spcs_nm)), 
             n_unique_ids = n_distinct(point_ID))
 
-#Sometimes n_occ is greater than n_unique_ids because the occurrence matched more than one spatial polygon
-#Some polygons overlap slightly, generating this issue
-
 #Calculate overlap with POW polygons
 summary_spatial_df$percent_in_poly <- (summary_spatial_df$n_match_polygon/summary_spatial_df$n_occ)*100   
 
 #Add columns for separate X and Y coords
-points <- cbind(points, st_coordinates(points))
+points_joined_cleaned <- cbind(points_joined_cleaned, st_coordinates(points_joined_cleaned))
 
 #Number of occurrences in "lake" biome
-nrow(points %>% filter(biome == "98"))
+nrow(points_joined_cleaned %>% filter(biome == "98"))
 
 #Number of occurrences in "rock and ice" biome
-nrow(points %>% filter(biome == "99"))
+nrow(points_joined_cleaned %>% filter(biome == "99"))
 
 #Calculate niche breadth
-summary_df <- points %>% 
+summary_df <- points_joined_cleaned %>% 
   st_drop_geometry() %>%
 #First filter: no points from biome 98 (lake) and 99 (rock and ice)
   filter(biome != "98" & biome != "99") %>%
@@ -126,7 +144,7 @@ traits$species <- gsub(" ", "_", traits$species)
 master_legume <- left_join(summary_df, traits, multiple="any") 
 
 # Bring in tree
-mytree <- read.tree(here("phylogeny/phylogeny_buildnodes1.tre"))
+mytree <- read.tree(here("phylogeny/phylogeny_polytomy_removed.tre"))
 
 # make rows in data match rows in tree
 data <- master_legume[match(mytree$tip.label, master_legume$species),]
@@ -137,27 +155,37 @@ data$abs_med_lat <- abs(data$median_lat)
 #Drop rows with any NA values (required by GLS models?)
 data <- data %>% drop_na()
 
+#Drop tree tips not in dataset
+tree_pruned <- drop.tip(mytree, setdiff(mytree$tip.label, data$species))
+
 # Make tree figure
-p <- ggtree(mytree, alpha=0.5, layout="circ")
+p <- ggtree(tree_pruned, linewidth=0.1, layout="circ")
 
 #Discrete traits
 tree_data_1 <- as.data.frame(data[,c("species", "EFN", "fixer")])
 rownames(tree_data_1) <- tree_data_1[, c("species")]
 tree_data_1 <- tree_data_1[,-1]
+tree_data_1$EFN <- as.factor(tree_data_1$EFN)
+tree_data_1$fixer <- as.factor(tree_data_1$fixer)
+colnames(tree_data_1) <- c("EFN", "Rhizobia")
 
 #Continuous traits
 tree_data_2 <- as.data.frame(data[,c("species", "precip_range", "temp_range", "nitro_range")])
 rownames(tree_data_2) <- tree_data_2[, c("species")]
 tree_data_2 <- tree_data_2[,-1]
+tree_data_2$precip_range <- scale(log(tree_data_2$precip_range), center=T, scale=T)
+tree_data_2$temp_range <- scale(log(tree_data_2$temp_range), center=T, scale=T)
+tree_data_2$nitro_range <- scale(log(tree_data_2$nitro_range), center=T, scale=T)
+colnames(tree_data_2) <- c("Precip", "Temp", "N")
 
-tree_data_1$EFN <- as.factor(tree_data_1$EFN)
-tree_data_1$fixer <- as.factor(tree_data_1$fixer)
-
-hm <- gheatmap(p, data = tree_data_1, offset=.8, width=.2, colnames_angle=95, colnames_offset_y = .25) +
-  scale_fill_viridis_d(option="D", name="discrete\nvalue")
-
-
-
+#Make figure
+p1<- gheatmap(p, tree_data_2, width=.5, offset=28, color=NA, colnames_angle=45, font.size = 2)+
+  scale_fill_continuous(type="viridis", name="Niche breadth")
+p2 <- p1 + new_scale_fill()
+p3 <- gheatmap(p2, data = tree_data_1, width=0.3, offset=0.02, color=NA, colnames_angle = 45, font.size=2)+
+  scale_fill_manual(values = c("#0E84B4FF", "#B50A2AFF"), name="Trait")
+p3
+ggsave("phylogeny/tree_heatmap.pdf", p3)
 
 # PGLS for precip range ----
 set.seed(10)
