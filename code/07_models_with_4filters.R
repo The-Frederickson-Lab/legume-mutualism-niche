@@ -155,6 +155,9 @@ data$abs_med_lat <- abs(data$median_lat)
 #Drop rows with any NA values (required by GLS models?)
 data <- data %>% drop_na()
 
+#Save data
+write.csv(data, "data/pgls_species_data.csv")
+
 #Drop tree tips not in dataset
 tree_pruned <- drop.tip(mytree, setdiff(mytree$tip.label, data$species))
 
@@ -243,7 +246,7 @@ p2 <- ggplot() +
   theme(axis.title.x = element_blank()) +
   geom_line(data = fixer_precip_means %>% filter(!(group=="0" & x > 45)), aes(x = x, y = predicted, colour = group), linewidth = 1.4) +
   scale_fill_manual(values = c("#0E84B4FF", "#26432FFF")) +
-  annotate("text", label = "Rhizobia: NS\n         Int.: **", x = 42, y = 2000, lineheight = 0.75, hjust = 0); p2
+  annotate("text", label = "Rhizobia: NS\n         Int.: ***", x = 42, y = 2000, lineheight = 0.75, hjust = 0); p2
 
 # PGLS for temp range ----
 set.seed(10)
@@ -307,10 +310,10 @@ write.csv(sqrttemp_df, "tables/sqrttemp_breadth_output_table.csv")
 
 ## Pull predicted means for EFN and fixer ----
 
-EFN_temp_means <- ggpredict(temp_range, terms=c("abs_med_lat [all]", "EFN [all]"), type="fixed")
+EFN_temp_means <- ggpredict(logtemp_range, terms=c("abs_med_lat [all]", "EFN [all]"), type="fixed")
 plot(EFN_temp_means)
 
-fixer_temp_means <- ggpredict(temp_range, terms=c("abs_med_lat [all]", "fixer [all]"), type="fixed")
+fixer_temp_means <- ggpredict(logtemp_range, terms=c("abs_med_lat [all]", "fixer [all]"), type="fixed")
 plot(fixer_temp_means)
 
 ## Make plots for EFN and rhizobia separately ----
@@ -318,6 +321,7 @@ plot(fixer_temp_means)
 p3 <- ggplot() +
   geom_point(data = data, aes(x = abs_med_lat, y = temp_range, colour = EFN, shape = EFN), alpha = 0.2) +
   theme_cowplot() +
+  scale_y_log10()+
   scale_shape_manual(values = c(21, 19), guide="none") +
   scale_colour_manual(values = c("#0E84B4FF", "#B50A2AFF"), labels = c("no", "yes")) +
   ylab("Mean annual\ntemp. range (\u00B0C)") +
@@ -325,11 +329,12 @@ p3 <- ggplot() +
   theme(axis.title.x = element_blank(), axis.title.y = element_text(vjust = 5)) +
   geom_line(data = EFN_temp_means %>% filter(!(group == "1" & x > 55)), aes(x = x, y = predicted, colour = group), linewidth = 1.2) +
   scale_fill_manual(values = c("#0E84B4FF", "#B50A2AFF")) +
-  annotate("text", label = "EFN: NS\n  Int.: NS", x = 50, y = 20, lineheight = 0.75, hjust = 0); p3
+  annotate("text", label = "EFN: *\n  Int.: NS", x = 50, y = 20, lineheight = 0.75, hjust = 0); p3
 
 p4 <- ggplot() +
   geom_point(data = data, aes(x = abs_med_lat, y = temp_range, color = fixer, shape = fixer), alpha = 0.05) +
   theme_cowplot() +
+  scale_y_log10()+
   scale_colour_manual(values = c("#0E84B4FF", "#26432FFF"), labels = c("no", "yes")) +
   scale_shape_manual(values = c(21, 19), guide = "none") +
   ylab("Mean annual temp.\nrange (\u00B0C)") +
@@ -455,7 +460,7 @@ efn_biome_plot <- ggplot()+
   theme(axis.title.x=element_blank())+
   geom_line(data=EFN_biome_means %>% filter(!(group=="1" & x>55)), aes(x=x, y=predicted, colour=group), linewidth=1.4)+
   scale_fill_manual(values=c("#0E84B4FF", "#B50A2AFF"))+
-  annotate("text", label="EFN: ***\n  Int.:  NS", x=55, y=12, lineheight = .75, hjust=0); efn_biome_plot
+  annotate("text", label="EFN: *\n  Int.**:  NS", x=55, y=12, lineheight = .75, hjust=0); efn_biome_plot
 
 fixer_biome_plot <- ggplot()+
   geom_point(data=data, aes(x=abs_med_lat, y=num_biome, color=fixer, shape=fixer),alpha=0.05)+
@@ -467,7 +472,7 @@ fixer_biome_plot <- ggplot()+
   labs(colour="Rhizobia")+
   geom_line(data=fixer_biome_means %>% filter(!(group=="0" & x>45)), aes(x=x, y=predicted, colour=group), linewidth=1.4)+
   scale_fill_manual(values=c("#0E84B4FF", "#26432FFF"))+
-  annotate("text", label="Rhizobia: **\n         Int.: NS", x=47, y=12, lineheight = .75, hjust=0); fixer_biome_plot
+  annotate("text", label="Rhizobia: *\n         Int.: NS", x=47, y=12, lineheight = .75, hjust=0); fixer_biome_plot
 
 biome_together = cowplot::plot_grid(efn_biome_plot, fixer_biome_plot, ncol = 1, align = "v", axis = "lr"); biome_together
 ggsave("figures/biome_number.jpg", height = 8, width = 5)

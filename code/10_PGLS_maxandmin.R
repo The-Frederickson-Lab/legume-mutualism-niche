@@ -10,7 +10,7 @@ library(ggeffects)
 library(cowplot)
 
 # Read back in PGLS dataframe
-data<-read.csv("data/pgls_species_data_poly_dropped.csv")
+data<-read.csv("data/pgls_species_data.csv")
 
 # Bring in tree
 mytree<-read.tree("phylogeny/phylogeny_polytomy_removed.tre")
