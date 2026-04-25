@@ -31,6 +31,7 @@ tree <- phylo.maker(sp.list = sp_list,
 
 #Save tree
 write.tree(tree$scenario.1, "phylogeny/phylogeny_buildnodes1.tre")
+tree$scenario.1 <- read.tree("phylogeny/phylogeny_buildnodes1.tre")
 
 # Trim phylogeny
 p <- ggtree(tree$scenario.1, alpha=0.3, layout = "circular")#+

@@ -1,5 +1,8 @@
 #Packages
-library(tidyverse)
+library(remotes)
+remotes::install_version("ggplot2", version = "3.5.2") #This allows ggplot2 and ggtree to work together without conflicts
+library(ggplot2)
+library(dplyr)
 library(cowplot)
 library(raster)
 library(sf)
@@ -155,7 +158,7 @@ data$abs_med_lat <- abs(data$median_lat)
 data <- data %>% drop_na()
 
 #Save data
-write.csv(data, "data/pgls_species_data.csv", row.names = FALSE)
+write.csv(data, "data/pgls_species_data.csv")
 
 #Drop tree tips not in dataset
 tree_pruned <- drop.tip(mytree, setdiff(mytree$tip.label, data$species))
@@ -194,7 +197,7 @@ set.seed(10)
 precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat + fixer*abs_med_lat + 
                       woody + uses_num_uses + annual,
                     data = data, 
-                    correlation = corPagel(1, mytree, form=~species), method = "ML")
+                    correlation = corPagel(1, tree_pruned, form=~species), method = "ML")
 summary(precip_range)
 plot(precip_range)
 qqnorm(precip_range, abline = c(0,1))

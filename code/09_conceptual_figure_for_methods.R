@@ -31,8 +31,8 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 
 #Some example species
 #example_species <- "Acacia_melanoxylon"
-#example_species <- "Cytisus_scoparius"
-example_species <- "Lupinus_nootkatensis"
+example_species <- "Cytisus_scoparius"
+#example_species <- "Lupinus_nootkatensis"
 example_df <- subset(points, species==example_species)
 
 #Make sure "introduced" is a factor
@@ -211,7 +211,7 @@ nitro_dist_1 <- ggplot()+
 nitro_dist_1
 
 #Combine 
-figure1 <- plot_grid(map2, temp_dist_1, map4,  precip_dist_1, map6, nitro_dist_1, align = "v", axis = "lr", nrow = 3, rel_widths=c(2,1,2,1,2,1))
+figure1 <- plot_grid(map2, temp_dist_1, map4,  precip_dist_1, map6, nitro_dist_1, align = "v", axis = "lr", nrow = 3, labels="AUTO", rel_widths=c(2,1,2,1,2,1))
 figure1
 
 #Save
