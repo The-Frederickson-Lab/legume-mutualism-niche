@@ -1,7 +1,6 @@
 #Packages
 library(tidyverse)
 library(cowplot)
-library(ggplot2)
 library(raster)
 library(sf)
 library(here)
@@ -68,8 +67,11 @@ points_joined_cleaned$intrdcd <- ifelse(points_joined_cleaned$point_ID %in% dupl
 #Remove duplicated rows
 points_joined_cleaned <- points_joined_cleaned[!duplicated(points_joined_cleaned), ]
 
+#Add columns for separate X and Y coords
+points_joined_cleaned <- cbind(points_joined_cleaned, st_coordinates(points_joined_cleaned))
+
 #Save the dataset
-write.csv(points_joined_cleaned, "data_large/allocc_with_native_status.csv")
+st_write(points_joined_cleaned, "data_large/allocc_with_native_status.csv", layer_options = "GEOMETRY=AS_XY", append=FALSE)
 
 #Summarize data by species
 summary_spatial_df <- points_joined_cleaned %>% 
@@ -82,9 +84,6 @@ summary_spatial_df <- points_joined_cleaned %>%
 
 #Calculate overlap with POW polygons
 summary_spatial_df$percent_in_poly <- (summary_spatial_df$n_match_polygon/summary_spatial_df$n_occ)*100   
-
-#Add columns for separate X and Y coords
-points_joined_cleaned <- cbind(points_joined_cleaned, st_coordinates(points_joined_cleaned))
 
 #Number of occurrences in "lake" biome
 nrow(points_joined_cleaned %>% filter(biome == "98"))
@@ -156,7 +155,7 @@ data$abs_med_lat <- abs(data$median_lat)
 data <- data %>% drop_na()
 
 #Save data
-write.csv(data, "data/pgls_species_data.csv")
+write.csv(data, "data/pgls_species_data.csv", row.names = FALSE)
 
 #Drop tree tips not in dataset
 tree_pruned <- drop.tip(mytree, setdiff(mytree$tip.label, data$species))
