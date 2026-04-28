@@ -28,7 +28,7 @@ max_noEFN <- max(data[data$EFN == 0, "abs_med_lat"])
 max_EFN <- max(data[data$EFN == 1, "abs_med_lat"])
 
 #Set position of p-values inset
-x_pos <- 60
+x_pos <- 55
 y_pos <- 12
 
 #Extract p-values from model results for plotting asterixes on figure
