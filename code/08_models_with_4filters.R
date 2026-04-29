@@ -213,6 +213,17 @@ precip_df <- data.frame(coef(summary(precip_range))) %>% format(scientific = F)
 precip_df$p.value <- as.numeric(precip_df$p.value) %>% round(4)
 write.csv(precip_df, here("tables/precip_breadth_output_table.csv"))
 
+## Pull predicted means for EFN and fixer ----
+EFN_precip_means <- ggpredict(precip_range, terms = c("abs_med_lat [all]", "EFN [all]"), type = "fixed")
+plot(EFN_precip_means)
+
+fixer_precip_means <- ggpredict(precip_range, terms = c("abs_med_lat [all]", "fixer [all]"), type = "fixed")
+plot(fixer_precip_means)
+
+# Save model predicted means
+write.csv(EFN_precip_means, here("tables/precip_range_EFN_predictions.csv"), row.names = FALSE)
+write.csv(fixer_precip_means, here("tables/precip_range_fixer_predictions.csv"), row.names = FALSE)
+
 # PGLS for temp range ----
 set.seed(10)
 
@@ -254,6 +265,18 @@ logtemp_df <- data.frame(coef(summary(logtemp_range))) %>% format(scientific = F
 logtemp_df$p.value <- as.numeric(logtemp_df$p.value) %>% round(4)
 write.csv(logtemp_df, here("tables/logtemp_breadth_output_table.csv"))
 
+## Pull predicted means for EFN and fixer ----
+EFN_temp_means <- ggpredict(temp_range, terms = c("abs_med_lat [all]", "EFN [all]"), type = "fixed")
+plot(EFN_temp_means)
+
+fixer_temp_means <- ggpredict(temp_range, terms = c("abs_med_lat [all]", "fixer [all]"), type = "fixed")
+plot(fixer_temp_means)
+
+# Save model predicted means
+write.csv(EFN_temp_means, here("tables/temp_range_EFN_predictions.csv"), row.names = FALSE)
+write.csv(fixer_temp_means, here("tables/temp_range_fixer_predictions.csv"), row.names = FALSE)
+
+
 # PGLS for nitrogen range ---
 set.seed(10)
 nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat + 
@@ -273,4 +296,17 @@ saveRDS(nitro_range, here("model_fits/nitro_niche_breadth_filters.rds"))
 nitro_df <- data.frame(coef(summary(nitro_range))) %>% format(scientific = F)
 nitro_df$p.value <- as.numeric(nitro_df$p.value) %>% round(4)
 write.csv(nitro_df, here("tables/nitro_breadth_output_table.csv"))
+
+## Pull predicted means for EFN and fixer ----
+EFN_nitro_means <- ggpredict(nitro_range, terms = c("abs_med_lat [all]", "EFN [all]"), type = "fixed")
+plot(EFN_nitro_means)
+
+fixer_nitro_means <- ggpredict(nitro_range, terms = c("abs_med_lat [all]", "fixer [all]"), type = "fixed")
+plot(fixer_nitro_means)
+
+# Save model predicted means
+write.csv(EFN_nitro_means, here("tables/nitro_range_EFN_predictions.csv"), row.names = FALSE)
+write.csv(fixer_nitro_means, here("tables/nitro_range_fixer_predictions.csv"), row.names = FALSE)
+
+
 
