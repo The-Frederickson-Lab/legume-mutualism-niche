@@ -307,6 +307,3 @@ plot(fixer_nitro_means)
 # Save model predicted means
 write.csv(EFN_nitro_means, here("tables/nitro_range_EFN_predictions.csv"), row.names = FALSE)
 write.csv(fixer_nitro_means, here("tables/nitro_range_fixer_predictions.csv"), row.names = FALSE)
-
-
-
