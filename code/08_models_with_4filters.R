@@ -175,6 +175,7 @@ qqnorm(biome_number, abline = c(0,1))
 
 # Save as RDS file
 saveRDS(biome_number, here("model_fits/biome_number_filters.rds"))
+#biome_number<-readRDS(here("model_fits/biome_number_filters.rds"))
 
 # save model output
 biome_number_df<-data.frame(coef(summary(biome_number))) %>% format(scientific=F)
@@ -207,6 +208,7 @@ hist(residuals(precip_range))
 
 # Save as RDS file
 saveRDS(precip_range, here("model_fits/precip_niche_breadth_filters.rds"))
+#precip_range<-readRDS(here("model_fits/precip_niche_breadth_filters.rds"))
 
 # Save model output
 precip_df <- data.frame(coef(summary(precip_range))) %>% format(scientific = F)
@@ -258,7 +260,8 @@ qqnorm(logtemp_range, abline = c(0,1))
 hist(residuals(logtemp_range))
 
 # Save as RDS file
-saveRDS(temp_range, here("model_fits/logtemp_niche_breadth_filters.rds"))
+saveRDS(logtemp_range, here("model_fits/logtemp_niche_breadth_filters.rds"))
+#logtemp_range<-readRDS(here("model_fits/logtemp_niche_breadth_filters.rds"))
 
 # save model output
 logtemp_df <- data.frame(coef(summary(logtemp_range))) %>% format(scientific = F)
@@ -291,6 +294,7 @@ hist(residuals(nitro_range))
 
 # Save as RDS file
 saveRDS(nitro_range, here("model_fits/nitro_niche_breadth_filters.rds"))
+#nitro_range <- readRDS(here("model_fits/nitro_niche_breadth_filters.rds"))
 
 # save model output
 nitro_df <- data.frame(coef(summary(nitro_range))) %>% format(scientific = F)
