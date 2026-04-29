@@ -59,4 +59,4 @@ p4 <- gheatmap(p3 + new_scale_fill(), tree_data_2, width=0.15, offset=14, color=
   scale_fill_manual(values = c("#4D4D4D", "#C44E52"), name="Rhizobia")
 p4
 
-ggsave("phylogeny/tree_heatmap.pdf", p4)
+ggsave(here("figures/FigureS1.pdf"), p4)
