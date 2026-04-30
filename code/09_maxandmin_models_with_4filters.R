@@ -37,6 +37,7 @@ qqnorm(precip_maxquant, abline = c(0,1))
 
 # save rds file so we can read it back in later
 saveRDS(precip_maxquant, "model_fits/precip_maxquant.rds")
+#precip_maxquant <- readRDS("model_fits/precip_maxquant.rds")
 
 precip_max<-data.frame(coef(summary(precip_maxquant))) %>% format(scientific=F)
 precip_max$Value<-as.numeric(precip_max$Value) %>% round(3)
@@ -65,13 +66,13 @@ temp_maxquant <- gls(temp_maxquant ~ EFN*abs_med_lat+
                      correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(temp_maxquant)
-
 hist(residuals(temp_maxquant))
 qqnorm(temp_maxquant, abline = c(0,1))
 plot(temp_maxquant)
 
 # save rds file
 saveRDS(temp_maxquant, "model_fits/temp_maxquant.rds")
+#temp_maxquant <- readRDS("model_fits/temp_maxquant.rds")
 
 temp_max<-data.frame(coef(summary(temp_maxquant))) %>% format(scientific=F)
 temp_max$Value<-as.numeric(temp_max$Value) %>% round(3)
@@ -108,6 +109,7 @@ qqnorm(nitro_maxquant, abline = c(0,1))
 
 # Write RDS file
 saveRDS(nitro_maxquant, "model_fits/nitro_maxquant.rds")
+#nitro_maxquant <- readRDS("model_fits/nitro_maxquant.rds")
 
 # write into file
 nitro_max<-data.frame(coef(summary(nitro_maxquant))) %>% format(scientific=F)
@@ -147,6 +149,7 @@ qqnorm(precip_minquant, abline = c(0,1))
 
 # write RDS
 saveRDS(precip_minquant, "model_fits/precip_minquant.rds")
+#precip_minquant <- readRDS("model_fits/precip_minquant.rds")
 
 # output table
 precip_min<-data.frame(coef(summary(precip_minquant))) %>% format(scientific=F)
@@ -174,13 +177,13 @@ temp_minquant <- gls(temp_minquant ~ EFN*abs_med_lat+
                      correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(temp_minquant)
-
 hist(residuals(temp_minquant))
 qqnorm(temp_minquant, abline = c(0,1))
 plot(temp_minquant)
 
 # write RDS
 saveRDS(temp_minquant, "model_fits/temp_minquant.rds")
+#temp_minquant <- readRDS("model_fits/temp_minquant.rds")
 
 temp_min<-data.frame(coef(summary(temp_minquant))) %>% format(scientific=F)
 temp_min$Value<-as.numeric(temp_min$Value) %>% round(3)
@@ -217,6 +220,7 @@ qqnorm(nitro_minquant, abline = c(0,1))
 
 # write RDS
 write_rds(nitro_minquant, "model_fits/nitro_minquant.rds")
+#nitro_minquant <- readRDS("model_fits/nitro_minquant.rds")
 
 # output table
 nitro_min<-data.frame(coef(summary(nitro_minquant))) %>% format(scientific=F)
