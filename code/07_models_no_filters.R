@@ -63,7 +63,7 @@ round(sum(is.na(points$nitrogen))/length(points$temp)*100, 1)
 # If the above doesn't work just copy-paste the URL into the browser, move file to data_large, modify next step as needed
 
 # Unzip data file
-# unzip("data_large/6kcchn7e3u_official_teow", exdir = "MutualismRangeProject2024/data_large/wwf_biome_data")
+# unzip("data_large/6kcchn7e3u_official_teow", exdir = "data_large/wwf_biome_data")
 
 # Read in wwf ecoregions shapefile
 shapes<-st_read(here("data_large/wwf_biome_data/wwf_terr_ecos.shp"))
