@@ -32,7 +32,7 @@ max_noEFN <- max(data[data$EFN == 0, "abs_med_lat"])
 max_EFN <- max(data[data$EFN == 1, "abs_med_lat"])
 
 #Set position of p-values inset
-x_pos <- 55
+x_pos <- 50
 y_pos <- 3000
 
 #Extract p-values from model results for plotting asterixes on figure
@@ -110,7 +110,7 @@ max_noEFN <- max(data[data$EFN == 0, "abs_med_lat"])
 max_EFN <- max(data[data$EFN == 1, "abs_med_lat"])
 
 #Set position of p-values inset
-x_pos <- 55
+x_pos <- 50
 y_pos <- 1
 
 #Extract p-values from model results for plotting asterixes on figure
@@ -187,7 +187,7 @@ max_noEFN <- max(data[data$EFN == 0, "abs_med_lat"])
 max_EFN <- max(data[data$EFN == 1, "abs_med_lat"])
 
 #Set position of p-values inset
-x_pos <- 55
+x_pos <- 50
 y_pos <- 50
 
 #Extract p-values from model results for plotting asterixes on figure
@@ -249,6 +249,6 @@ p7 <- cowplot::plot_grid(p1, p2, p3, p4, p5, p6, nrow=3, align = "hv", axis = "l
 p7
 
 #Save final Figure 3
-save_plot("figures/Figure3.pdf", p7, base_height = 10, base_width = 10)
+save_plot("figures/Figure3.pdf", p7, base_height = 10, base_width = 12)
 
 
