@@ -6,6 +6,8 @@ library(sf)
 library(tidyverse)
 library(knitr)
 library(here)
+library(cowplot)
+library(scales)
 
 # Using the twenty species dataframe for right now, but replace with full data when the time comes
 occ <- read_csv(here("data_large/allocc_clean.csv"))
@@ -37,6 +39,9 @@ for (i in 1:length(species_list)) {
   print(species_list[i])
 }
 
+sf::st_write(results, "data_large/allocc_thinned.csv", layer_options = "GEOMETRY=AS_XY")
+#results <- read_csv(here("data_large/allocc_thinned.csv"))
+
 # Check that numbers make sense
 prethinning = occ %>% 
   group_by(species) %>% 
@@ -47,10 +52,18 @@ postthinning = results %>%
   summarize(n_after = n())
 
 check = left_join(prethinning, postthinning)
-plot(check$n_before, check$n_after)
-abline(0, 1)
 
-sf::st_write(results, "data_large/allocc_thinned.csv", layer_options = "GEOMETRY=AS_XY")
+p1 <- ggplot(data=check, aes(x=n_before, y=n_after))+geom_point(alpha=0.5)+geom_abline(intercept=0, slope=1, linetype="dotted")+
+  theme_cowplot()+
+  xlab("Pre-thinning occurrences (no.)")+
+  ylab("Post-thinning occurrences (no.)")+
+  scale_y_continuous(limits=c(-1000, 1010000), labels = label_comma())+
+  scale_x_continuous(limits=c(-1000, 1010000),labels = label_comma())+#+geom_smooth(method="lm")+
+  theme(plot.margin = margin(t = 0.5, r = 1, b = 0.5, l = 0.5, unit = "cm"))#+
+  #scale_x_log10()+
+  #scale_y_log10()
+p1
+save_plot(here("figures/occ_pre_post.pdf"), p1)
 
 # write out species list for later comparison
 
@@ -61,4 +74,5 @@ species_list = results %>%
   summarize(n = n())
 
 write_csv(species_list, "species_lists/species_list_post_thinning.csv")
+
 
