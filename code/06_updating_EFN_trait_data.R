@@ -4,7 +4,7 @@ library(here)
 #Existing trait dataset
 traits <- read.csv(here("data/legume_range_traits.csv")) %>% 
   rename(species = Phy) %>% 
-  dplyr::select(species, genus, fixer, woody, annual, uses_num_uses, Domatia, EFN) %>%
+  dplyr::select(species, genus, fixer, woody, annual, uses_num_uses, Domatia, EFN, total_area_introduced, total_area_native) %>%
   distinct()
 traits$species <- gsub(" ", "_", traits$species)
 
@@ -19,8 +19,8 @@ efn_update <- read.csv(here("data/efn_database_master_spreadsheet_6_9_2023.csv")
 
 #Compare old and new EFN lists
 length(unique(traits[traits$EFN == 1, "species"]))
-
 #279 species with EFNs in trait dataset
+
 efn_new <- efn_update %>% distinct(species)
 length(efn_new$species)
 #1022 species with EFNs
@@ -70,4 +70,4 @@ merge_df$EFN <- ifelse(merge_df$EFN_category == "Both datasets" & merge_df$EFN =
 merge_df <- subset(merge_df, EFN_category != "New only" & !is.na(EFN))
 
 #Save data
-write.csv(merge_df[, -c(9,10,11)], here("data/updated_legume_range_traits.csv"))
+write.csv(merge_df[, -c(11, 12, 13)], here("data/updated_legume_range_traits.csv"))
