@@ -76,7 +76,27 @@ points <- st_join(points, shapes, join=st_intersects, left=TRUE, largest=FALSE) 
 #Write occurrence dataset with environment data
 sf::st_write(points, here("data_large/allocc_thinned_env.csv"), layer_options = "GEOMETRY=AS_XY", append=FALSE)
 
-#Calculate niche breadth
+#Determine correlation among environmental variables
+env_data <- points[, c("temp", "precip", "nitrogen")] %>% st_drop_geometry()
+cor_matrix <- cor(env_data, use = "complete.obs")
+print(cor_matrix)
+
+#Plot correlation among variables
+p1 <- ggplot(data=points |> slice_sample(n = 6657), aes(x=temp, y=nitrogen))+geom_point(alpha=0.1)+geom_smooth(method="lm")+theme_cowplot()+
+  xlab("Temperature (\u00B0C)")+
+  ylab("Soil nitrogen (cg/kg)")
+
+p2 <- ggplot(data=points |> slice_sample(n = 6657), aes(x=precip, y=nitrogen))+geom_point(alpha=0.1)+geom_smooth(method="lm")+theme_cowplot()+
+  xlab("Precipitation (mm)")+
+  ylab("Soil nitrogen (cg/kg)")
+
+p3 <- ggplot(data=points |> slice_sample(n = 6657), aes(x=temp, y=precip))+geom_point(alpha=0.1)+geom_smooth(method="lm")+theme_cowplot()+
+  ylab("Precipitation (mm)")+
+  xlab("Temperature (\u00B0C)")
+p4 <- plot_grid(p1, p2, p3, nrow=1, labels="AUTO")
+p4
+
+save_plot("figures/env_correlations.pdf", p4, base_width =8, base_height=4)
 
 #Add columns for separate X and Y coords
 points <- cbind(points, st_coordinates(points))
@@ -115,7 +135,7 @@ summary_df <- points %>%
 #Merge trait data
 traits <- read.csv(here("data/updated_legume_range_traits.csv")) %>% 
     #rename(species = Phy) %>% #Don't need this for updated trait data
-  dplyr::select(species, genus, fixer, woody, annual, uses_num_uses, Domatia, EFN)
+  dplyr::select(species, genus, fixer, woody, annual, uses_num_uses, Domatia, EFN, total_area_introduced, total_area_native)
 
 traits$species <- gsub(" ", "_", traits$species)
 master_legume <- left_join(summary_df, traits, multiple="any") 
@@ -151,7 +171,6 @@ temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat + fixer*abs_med_lat +
                     correlation = corPagel(1, mytree, form=~species), method = "ML")
 
 summary(temp_range)
-
 plot(temp_range)
 qqnorm(temp_range, abline = c(0,1))
 hist(residuals(temp_range))
@@ -176,4 +195,5 @@ hist(residuals(nitro_range))
 
 # Save as RDS file
 write_rds(nitro_range, here("model_fits/nitro_niche_breadth_nofilters.rds"))
+
 
