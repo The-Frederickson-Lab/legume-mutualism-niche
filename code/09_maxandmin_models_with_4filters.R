@@ -25,7 +25,7 @@ mytree<-read.tree("phylogeny/phylogeny_polytomy_removed.tre")
 #hist(log(data$precip_maxquant))
 
 precip_maxquant <- gls(log(precip_maxquant) ~ EFN*abs_med_lat+
-                         fixer*abs_med_lat+woody+uses_num_uses+annual,
+                         fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                        data=data, 
                        correlation=corPagel(1, mytree, form=~species), method="ML")
 
@@ -61,7 +61,7 @@ write.csv(fixer_precip_max_means, here("tables/precip_max_fixer_predictions.csv"
 #hist(data$temp_maxquant)
 
 temp_maxquant <- gls(temp_maxquant ~ EFN*abs_med_lat+
-                       fixer*abs_med_lat+woody+uses_num_uses+annual,
+                       fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                      data=data, 
                      correlation=corPagel(1, mytree, form=~species), method="ML")
 
@@ -97,7 +97,7 @@ write.csv(fixer_temp_max_means, here("tables/temp_max_fixer_predictions.csv"), r
 #hist(data$nitro_maxquant)
 
 nitro_maxquant <- gls(log(nitro_maxquant) ~ EFN*abs_med_lat+
-                        fixer*abs_med_lat+woody+uses_num_uses+annual,
+                        fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                       data=data, 
                       correlation=corPagel(1, mytree, form=~species), method="ML")
 
@@ -137,7 +137,7 @@ write.csv(fixer_nitro_max_means, here("tables/nitro_max_fixer_predictions.csv"),
 #hist(data$precip_minquant)
 
 precip_minquant <- gls(log(precip_minquant) ~ EFN*abs_med_lat+
-                         fixer*abs_med_lat+woody+uses_num_uses+annual,
+                         fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                        data=data, 
                        correlation=corPagel(1, mytree, form=~species), method="ML")
 
@@ -172,7 +172,7 @@ write.csv(fixer_precip_min_means, here("tables/precip_min_fixer_predictions.csv"
 
 ## PGLS for temp minquant ----
 temp_minquant <- gls(temp_minquant ~ EFN*abs_med_lat+
-                       fixer*abs_med_lat+woody+uses_num_uses+annual,
+                       fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                      data=data, 
                      correlation=corPagel(1, mytree, form=~species), method="ML")
 
@@ -208,7 +208,7 @@ write.csv(fixer_temp_min_means, here("tables/temp_min_fixer_predictions.csv"), r
 #hist(log(data$nitro_minquant))
 
 nitro_minquant <- gls(log(nitro_minquant) ~ EFN*abs_med_lat +
-                        fixer*abs_med_lat+woody+uses_num_uses+annual,
+                        fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                       data=data, 
                       correlation=corPagel(1, mytree, form=~species), method="ML")
 
