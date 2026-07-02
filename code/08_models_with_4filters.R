@@ -130,6 +130,12 @@ filter(n() >= 25) %>%
          )
 
 #Calculate Wallacean darkspot score for each species
+#Data from the supplement of 
+#Ondo, I., Dhanjal-Adams, K.L., Pironon, S., Silvestro, D., Colli-Silva, M., Deklerck, 
+#V., Grace, O.M., Monro, A.K., Nicolson, N., Walker, B. and Antonelli, A. (2024), 
+#Plant diversity darkspots for global collection priorities. New Phytol, 244: 719-733. 
+#https://doi.org/10.1111/nph.20024
+
 darkspot_df <- read.csv(here("data/nph20024-sup-0004-tables3.csv"))
 darkspot_df_meta <- read.csv(here("data/nph20024-sup-0002-tables1.csv"))
 darkspot_df <- merge(darkspot_df, darkspot_df_meta[, c(2:3)], by.x="Botanical.country", by.y="LEVEL3_NAM", all.x=T, all.y=T)
