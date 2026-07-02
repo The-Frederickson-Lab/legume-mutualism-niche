@@ -1,0 +1,358 @@
+Botanical country,linnaean_darkspot_score,wallacean_darkspot_score,combined_darkspot_score
+Colombia,1,0.827,1.827
+New Guinea,0.901,0.516,1.417
+China South-Central,0.698,0.67,1.368
+Vietnam,0.503,0.824,1.327
+Myanmar,0.302,1,1.302
+Turkey,0.506,0.788,1.295
+India,0.492,0.701,1.193
+Assam,0.261,0.88,1.141
+Peru,0.578,0.496,1.074
+Philippines,0.346,0.72,1.066
+Iran,0.178,0.752,0.93
+East Himalaya,0.142,0.777,0.92
+Borneo,0.506,0.404,0.91
+Ecuador,0.52,0.364,0.884
+Thailand,0.44,0.438,0.877
+Laos,0.307,0.528,0.834
+China Southeast,0.393,0.423,0.816
+Brazil Southeast,0.593,0.151,0.744
+West Himalaya,0.265,0.467,0.732
+Madagascar,0.527,0.202,0.729
+Malaya,0.215,0.507,0.721
+Uzbekistan,0.195,0.524,0.719
+Bangladesh,0.028,0.616,0.645
+Tadzhikistan,0.067,0.571,0.638
+Mexico Southwest,0.355,0.254,0.61
+Venezuela,0.264,0.337,0.602
+Cape Provinces,0.358,0.23,0.589
+Costa Rica,0.444,0.114,0.558
+Sumatera,0.21,0.345,0.555
+Afghanistan,0.113,0.44,0.553
+Panama,0.419,0.134,0.553
+Kazakhstan,0.08,0.465,0.545
+Bolivia,0.358,0.187,0.545
+Brazil North,0.394,0.125,0.519
+Sudan,0.031,0.473,0.504
+Pakistan,0.061,0.43,0.491
+Angola,0.101,0.376,0.477
+Cambodia,0.082,0.388,0.47
+Brazil Northeast,0.395,0.074,0.469
+Tibet,0.159,0.305,0.464
+Kirgizistan,0.087,0.356,0.444
+Zambia,0.059,0.377,0.435
+Nepal,0.049,0.386,0.435
+Zimbabwe,0.022,0.394,0.416
+Cuba,0.185,0.218,0.403
+Albania,0.085,0.315,0.399
+Transcaucasus,0.15,0.24,0.389
+Yugoslavia,0.137,0.248,0.385
+Iraq,0.013,0.371,0.383
+Andaman Is.,0.054,0.315,0.369
+Uganda,0.036,0.329,0.365
+Greece,0.176,0.182,0.359
+Morocco,0.069,0.288,0.357
+Mexico Southeast,0.223,0.134,0.357
+Brazil West-Central,0.294,0.056,0.351
+Turkmenistan,0.048,0.302,0.35
+Spain,0.195,0.152,0.347
+Guatemala,0.154,0.186,0.34
+Cameroon,0.217,0.121,0.338
+Haiti,0.047,0.291,0.338
+Sulawesi,0.143,0.193,0.337
+Brazil South,0.231,0.106,0.337
+Mexico Northeast,0.177,0.152,0.329
+Turkey-in-Europe,0.041,0.286,0.328
+Congo,0.067,0.255,0.322
+Taiwan,0.208,0.114,0.322
+Mozambique,0.064,0.256,0.32
+Zaïre,0.175,0.136,0.311
+Italy,0.167,0.131,0.298
+Nigeria,0.034,0.258,0.293
+Sri Lanka,0.031,0.259,0.291
+Bulgaria,0.058,0.231,0.29
+Western Australia,0.232,0.053,0.286
+Libya,0.015,0.269,0.284
+Sweden,0.139,0.141,0.281
+Central African Republic,0.054,0.226,0.28
+Eritrea,0.035,0.242,0.277
+Mexico Gulf,0.119,0.153,0.272
+Guyana,0.169,0.097,0.266
+Malawi,0.042,0.223,0.265
+Paraguay,0.121,0.142,0.263
+Saudi Arabia,0.028,0.234,0.262
+Honduras,0.11,0.151,0.262
+Somalia,0.015,0.242,0.257
+Xinjiang,0.061,0.192,0.253
+Nicobar Is.,0.016,0.237,0.253
+Algeria,0.033,0.214,0.246
+Lesser Sunda Is.,0.044,0.2,0.244
+Tanzania,0.06,0.181,0.241
+Kenya,0.037,0.204,0.241
+New Caledonia,0.182,0.059,0.241
+Jawa,0.038,0.195,0.233
+Gabon,0.167,0.065,0.232
+Japan,0.171,0.056,0.227
+Tunisia,0.047,0.179,0.226
+Chile Central,0.114,0.112,0.226
+Romania,0.05,0.175,0.225
+Solomon Is.,0.066,0.153,0.219
+Dominican Republic,0.09,0.124,0.214
+Trinidad-Tobago,0.016,0.198,0.214
+Sierra Leone,0.035,0.177,0.212
+Sardegna,0.054,0.158,0.212
+Chad,0.056,0.154,0.21
+Ethiopia,0.048,0.161,0.209
+Egypt,0.015,0.192,0.207
+Great Britain,0.131,0.074,0.205
+North Caucasus,0.058,0.144,0.202
+Mexico Northwest,0.082,0.119,0.201
+Argentina Northwest,0.123,0.076,0.199
+Yemen,0.035,0.162,0.198
+Maluku,0.059,0.139,0.198
+Mongolia,0.029,0.168,0.197
+China North-Central,0.052,0.144,0.196
+Lebanon-Syria,0.024,0.17,0.194
+Queensland,0.151,0.043,0.194
+Finland,0.05,0.143,0.193
+Hainan,0.044,0.148,0.192
+California,0.142,0.043,0.184
+Inner Mongolia,0.019,0.164,0.183
+France,0.067,0.115,0.183
+Germany,0.091,0.09,0.182
+Hungary,0.077,0.103,0.18
+Sicilia,0.066,0.112,0.177
+Mexico Central,0.053,0.122,0.176
+East Aegean Is.,0.015,0.156,0.171
+Poland,0.033,0.133,0.166
+Fiji,0.024,0.14,0.164
+Gulf of Guinea Is.,0.05,0.114,0.163
+Namibia,0.072,0.089,0.161
+Surinam,0.064,0.097,0.161
+Rwanda,0.057,0.103,0.159
+Cabinda,0.009,0.15,0.159
+Korea,0.06,0.097,0.157
+Czechoslovakia,0.056,0.093,0.148
+Qinghai,0.039,0.108,0.147
+Ukraine,0.024,0.12,0.144
+Uruguay,0.022,0.121,0.142
+Guinea,0.066,0.074,0.141
+Liberia,0.044,0.097,0.141
+Sinai,0.012,0.126,0.138
+Northern Provinces,0.094,0.043,0.137
+Chile North,0.052,0.085,0.137
+French Guiana,0.057,0.08,0.137
+Venezuelan Antilles,0.014,0.122,0.136
+Kriti,0.038,0.097,0.134
+Equatorial Guinea,0.067,0.065,0.133
+East European Russia,0.059,0.073,0.132
+Austria,0.072,0.055,0.127
+Argentina Northeast,0.082,0.044,0.126
+Cyprus,0.034,0.089,0.123
+Georgia,0.034,0.089,0.122
+Windward Is.,0.029,0.093,0.122
+Kentucky,0.032,0.089,0.121
+Altay,0.062,0.058,0.12
+Manchuria,0.021,0.096,0.117
+Switzerland,0.039,0.079,0.117
+Tennessee,0.044,0.069,0.113
+Ireland,0.036,0.076,0.112
+"Gambia, The",0.01,0.1,0.11
+Oman,0.009,0.098,0.107
+Senegal,0.011,0.096,0.106
+Belize,0.054,0.051,0.105
+Burundi,0.046,0.058,0.104
+El Salvador,0.049,0.055,0.104
+New South Wales,0.066,0.036,0.103
+Baleares,0.042,0.06,0.102
+Belarus,0.032,0.069,0.101
+Corse,0.054,0.044,0.098
+Virginia,0.042,0.055,0.098
+Samoa,0.052,0.045,0.098
+North Carolina,0.044,0.053,0.097
+Gulf States,0.02,0.077,0.096
+Caroline Is.,0.009,0.086,0.095
+Leeward Is. AB Ant,0.021,0.075,0.095
+Mississippi,0.021,0.073,0.094
+Canary Is.,0.034,0.06,0.093
+Socotra,0.045,0.048,0.093
+Portugal,0.043,0.05,0.093
+Baltic States,0.04,0.052,0.092
+Texas,0.054,0.039,0.092
+Guinea-Bissau,0.022,0.069,0.091
+KwaZulu-Natal,0.046,0.045,0.091
+Palestine,0.027,0.064,0.091
+Ivory Coast,0.052,0.038,0.09
+Norway,0.041,0.049,0.09
+Chile South,0.017,0.072,0.089
+Northwest European Russia,0.02,0.068,0.088
+Comoros,0.041,0.046,0.087
+Arizona,0.061,0.025,0.086
+Mauritius,0.02,0.065,0.085
+Djibouti,0.014,0.071,0.085
+Montana,0.021,0.064,0.085
+Ghana,0.047,0.037,0.084
+Bismarck Archipelago,0.018,0.065,0.083
+South Australia,0.068,0.014,0.083
+North European Russia,0.026,0.057,0.083
+Delaware,0.012,0.07,0.082
+Krasnoyarsk,0.057,0.025,0.081
+New Mexico,0.05,0.032,0.081
+South Carolina,0.031,0.049,0.081
+New Zealand South,0.067,0.013,0.08
+Oregon,0.06,0.019,0.08
+Mali,0.023,0.056,0.079
+Cayman Is.,0.017,0.062,0.079
+Botswana,0.033,0.045,0.078
+Central European Russia,0.051,0.026,0.077
+West Virginia,0.023,0.054,0.077
+Nicaragua,0.029,0.046,0.075
+Netherlands,0.06,0.015,0.074
+Krym,0.027,0.047,0.074
+Alabama,0.037,0.037,0.074
+Mauritania,0.007,0.066,0.073
+Belgium,0.033,0.04,0.073
+Denmark,0.039,0.033,0.073
+Northern Territory,0.049,0.02,0.07
+Vanuatu,0.026,0.043,0.069
+Utah,0.04,0.027,0.068
+Florida,0.037,0.031,0.068
+Aruba,0.019,0.048,0.068
+Free State,0.038,0.028,0.066
+South European Russia,0.025,0.041,0.066
+Swaziland,0.026,0.039,0.065
+Nansei-shoto,0.014,0.051,0.065
+Western Sahara,0.01,0.054,0.064
+Føroyar,0.014,0.05,0.064
+Primorye,0.029,0.033,0.062
+Idaho,0.037,0.025,0.062
+Louisiana,0.014,0.047,0.062
+Argentina South,0.031,0.031,0.062
+Maldives,0.032,0.029,0.061
+Washington,0.038,0.023,0.06
+Marianas,0.014,0.046,0.06
+Togo,0.009,0.05,0.059
+Aldabra,0.027,0.032,0.059
+Khabarovsk,0.022,0.037,0.059
+New Zealand North,0.048,0.011,0.059
+Cape Verde,0.031,0.027,0.058
+Galápagos,0.02,0.038,0.058
+Victoria,0.041,0.016,0.057
+Ohio,0.022,0.035,0.057
+Réunion,0.021,0.035,0.056
+Kuwait,0.013,0.043,0.056
+Tonga,0.014,0.042,0.056
+Tubuai Is.,0.007,0.049,0.056
+Jamaica,0.005,0.052,0.056
+Madeira,0.027,0.028,0.055
+West Siberia,0.022,0.032,0.054
+Iowa,0.015,0.039,0.054
+Indiana,0.018,0.034,0.052
+Colorado,0.037,0.015,0.052
+Nevada,0.021,0.03,0.052
+Tuva,0.026,0.024,0.051
+Arkansas,0.027,0.024,0.051
+Netherlands Antilles,0.014,0.037,0.051
+Benin,0.03,0.02,0.05
+Amur,0.023,0.027,0.05
+Laccadive Is.,0.014,0.036,0.05
+Rodrigues,0.013,0.036,0.049
+Saskatchewan,0.019,0.03,0.049
+Pennsylvania,0.022,0.027,0.049
+New York,0.024,0.025,0.049
+Puerto Rico,0.023,0.025,0.048
+Niger,0.013,0.035,0.047
+Yakutskiya,0.028,0.019,0.047
+Turks-Caicos Is.,0.011,0.036,0.047
+Kamchatka,0.029,0.017,0.046
+District of Columbia,0.014,0.032,0.046
+Illinois,0.017,0.029,0.046
+Michigan,0.015,0.031,0.046
+Maryland,0.009,0.036,0.045
+Seychelles,0.013,0.031,0.044
+Lesotho,0.012,0.031,0.043
+Azores,0.036,0.007,0.043
+Ontario,0.028,0.015,0.043
+British Columbia,0.028,0.015,0.043
+Hawaii,0.012,0.032,0.043
+Bahamas,0.017,0.026,0.043
+Newfoundland,0.021,0.021,0.042
+Wyoming,0.018,0.023,0.042
+Maine,0.014,0.028,0.042
+Irkutsk,0.016,0.025,0.041
+Oklahoma,0.019,0.022,0.041
+Santa Cruz Is.,0.007,0.034,0.041
+Juan Fernández Is.,0.014,0.027,0.041
+Selvagens,0.023,0.018,0.04
+Magadan,0.021,0.019,0.04
+Sakhalin,0.019,0.02,0.04
+Buryatiya,0.018,0.022,0.04
+Rhode I.,0.013,0.027,0.04
+New Brunswick,0.016,0.024,0.04
+Society Is.,0.014,0.026,0.04
+Chatham Is.,0.026,0.013,0.039
+Iceland,0.007,0.032,0.039
+New Hampshire,0.013,0.026,0.039
+Bermuda,0.019,0.02,0.039
+Kazan-retto,0.006,0.032,0.038
+Nova Scotia,0.021,0.017,0.038
+Burkina,0.009,0.028,0.037
+Chita,0.016,0.02,0.036
+Québec,0.022,0.014,0.036
+Ogasawara-shoto,0,0.035,0.035
+Minnesota,0.018,0.017,0.035
+Massachusetts,0.01,0.025,0.035
+Wisconsin,0.019,0.016,0.035
+New Jersey,0.012,0.023,0.035
+Marshall Is.,0.012,0.023,0.035
+North Dakota,0.012,0.023,0.034
+Missouri,0.022,0.012,0.034
+Caprivi Strip,0.016,0.018,0.033
+Yukon,0.021,0.011,0.032
+Alberta,0.017,0.015,0.032
+Alaska,0.018,0.013,0.031
+Southwest Caribbean,0.011,0.019,0.03
+Kuril Is.,0.014,0.015,0.028
+Labrador,0.016,0.012,0.028
+Nunavut,0.017,0.011,0.027
+Aleutian Is.,0.012,0.014,0.027
+Prince Edward I.,0.012,0.014,0.027
+Manitoba,0.013,0.013,0.026
+Vermont,0.016,0.01,0.026
+Wallis-Futuna Is.,0.008,0.018,0.026
+C. American Pacific Is.,0.018,0.008,0.026
+Niue,0.007,0.018,0.025
+South Dakota,0.011,0.013,0.024
+Christmas I.,0.009,0.014,0.023
+Norfolk Is.,0.016,0.006,0.023
+Nebraska,0.006,0.017,0.023
+Northwest Territories,0.011,0.012,0.023
+Greenland,0.014,0.009,0.023
+Tuvalu,0.013,0.009,0.023
+Tasmania,0.005,0.016,0.021
+Tokelau-Manihiki,0.012,0.01,0.021
+Line Is.,0.014,0.007,0.021
+Tuamotu,0.005,0.016,0.021
+Mozambique Channel Is.,0.012,0.007,0.02
+Connecticut,0.011,0.01,0.02
+Nauru,0.016,0.003,0.02
+St.Helena,0.01,0.008,0.019
+Cocos (Keeling) I.,0.011,0.007,0.019
+Antipodean Is.,0.013,0.006,0.019
+Kermadec Is.,0.015,0.004,0.018
+Pitcairn Is.,0.01,0.008,0.018
+Marquesas,0.007,0.011,0.018
+Svalbard,0.012,0.004,0.017
+Cook Is.,0.007,0.01,0.017
+Chagos Archipelago,0.016,NA,0.016
+Kansas,0.006,0.006,0.012
+Easter Is.,0.007,0.005,0.012
+Ascension,0.006,0.005,0.011
+Mexican Pacific Is.,0.007,0.004,0.011
+Phoenix Is.,0.01,NA,0.01
+Gilbert Is.,0.009,NA,0.009
+South China Sea,NA,NA,NA
+Howland-Baker Is.,NA,NA,NA
+Marcus I.,NA,NA,NA
+Wake I.,NA,NA,NA
+Desventurados Is.,NA,NA,NA
