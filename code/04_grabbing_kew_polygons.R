@@ -76,4 +76,4 @@ ggplot() +
 powo_polygons <- st_as_sf(plant_dist, sf_column_name="geometry") %>% 
   st_collection_extract(., "POLYGON")
 
-sf::st_write(powo_polygons, "data_large/powo_polygons_sorted.shp")
+sf::st_write(powo_polygons, "data_large/powo_polygons_sorted.shp", append=FALSE)

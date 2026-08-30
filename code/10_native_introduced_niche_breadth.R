@@ -12,9 +12,49 @@ points <- st_as_sf(x = points,
                    # Tell R to read coordinates as WGS84
                    crs = 4326)
 
-
 #Read in Plants of the World polygons
 poly_sf = st_read(here("data_large/powo_polygons_sorted.shp"))
+
+#Some filtering requires determining overlap between occurrences and polygons
+# Turning geodesic geometry off
+sf_use_s2(FALSE)
+
+#Give every point an ID
+points <- points %>% mutate(point_ID = row_number())
+
+#Spatially join points and polygons
+points_joined <- bind_rows(
+  lapply(unique(points$species), function(sp) {
+    pts <- points %>% filter(species == sp)
+    polys <- poly_sf %>% filter(spcs_nm == sp)
+    if (nrow(polys) == 0) {
+      return(pts)  # no polygon, keep points
+    }
+    st_join(pts, polys, left = TRUE)
+  })
+)
+
+#Calculate Wallacean darkspot score for each species
+#Data from the supplement of 
+#Ondo, I., Dhanjal-Adams, K.L., Pironon, S., Silvestro, D., Colli-Silva, M., Deklerck, 
+#V., Grace, O.M., Monro, A.K., Nicolson, N., Walker, B. and Antonelli, A. (2024), 
+#Plant diversity darkspots for global collection priorities. New Phytol, 244: 719-733. 
+#https://doi.org/10.1111/nph.20024
+
+darkspot_df <- read.csv(here("data/nph20024-sup-0004-tables3.csv"))
+darkspot_df_meta <- read.csv(here("data/nph20024-sup-0002-tables1.csv"))
+darkspot_df <- merge(darkspot_df, darkspot_df_meta[, c(2:3)], by.x="Botanical.country", by.y="LEVEL3_NAM", all.x=T, all.y=T)
+unique(points_joined$ar_cd_3) %in% unique(darkspot_df$LEVEL3_COD) #All points are in polygons within the dark spot dataset
+points_joined <- merge(points_joined, darkspot_df[, c("wallacean_darkspot_score", "LEVEL3_COD")], by.x="ar_cd_3", by.y="LEVEL3_COD", all.x=T, all.y=F)
+
+species_wal_score <- points_joined %>% 
+  st_drop_geometry() %>%
+  group_by(species, intrdcd.x) %>%
+  summarize(mean_wal_score = mean(wallacean_darkspot_score, na.rm=T)) %>%
+  filter(!is.na(intrdcd.x))
+
+#Save Wallacean shortfall score
+write.csv(species_wal_score, "data/wallacean_shortfall_intrdcd.csv")
 
 #Summarize data by species
 summary_spatial_df <- points %>% 
@@ -27,9 +67,6 @@ summary_spatial_df <- points %>%
 
 #Calculate overlap with POW polygons
 summary_spatial_df$percent_in_poly <- (summary_spatial_df$n_match_polygon/summary_spatial_df$n_occ)*100   
-
-#Add columns for separate X and Y coords
-points <- cbind(points, st_coordinates(points))
 
 #Calculate niche breadth
 summary_df <- points %>% 
@@ -56,12 +93,12 @@ summary_df <- points %>%
           temp_minquant = quantile(temp, 0.05, na.rm=T),
           temp_mean = mean(temp, na.rm=T),
           temp_median = median(temp, na.rm=T),
-          max_lat = max(Y, na.rm=T),
-          min_lat = min(Y, na.rm=T),
-          mean_lat = mean(Y, na.rm=T),
-          median_lat = median(Y, na.rm=T),
-          median_long = median(X, na.rm=T),
-          quant95 = quantile(Y, 0.95, na.rm=T),
+          max_lat = max(Y.1, na.rm=T),
+          min_lat = min(Y.1, na.rm=T),
+          mean_lat = mean(Y.1, na.rm=T),
+          median_lat = median(Y.1, na.rm=T),
+          median_long = median(X.1, na.rm=T),
+          quant95 = quantile(Y.1, 0.95, na.rm=T),
           quant005 = quantile(Y, 0.05, na.rm=T),
           num_biome = length(unique(na.omit(biome))),
           biome = names(which.max(table(na.omit(biome))))
@@ -70,7 +107,6 @@ summary_df <- points %>%
          temp_range = temp_maxquant - temp_minquant,
          nitro_range = nitro_maxquant - nitro_minquant
   )
-
 
 #Read in trait data
 traits <- read.csv(here("data/updated_legume_range_traits.csv")) %>% 
@@ -93,6 +129,9 @@ data <- master_legume_native[match(mytree$tip.label, master_legume_native$specie
 # calculate absolute median latitude
 data$abs_med_lat <- abs(data$median_lat)
 
+# Add Wallacean shortfall
+data <- merge(data, species_wal_score[species_wal_score$intrdcd.x == 0, ], by.x="species", by.y="species")
+  
 #Save data
 write.csv(data, "data/pgls_species_data_native.csv")
 
@@ -102,7 +141,7 @@ tree_pruned <- drop.tip(mytree, setdiff(mytree$tip.label, data$species))
 # PGLS for precip range ----
 set.seed(10)
 precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat + fixer*abs_med_lat + 
-                      woody + uses_num_uses + annual,
+                      woody + uses_num_uses + annual + mean_wal_score,
                     data = subset(data, !is.na(precip_range)), 
                     correlation = corPagel(1, tree_pruned, form=~species), method = "ML")
 summary(precip_range)
@@ -121,7 +160,7 @@ write.csv(precip, here("tables/native_precip_allspecies_output_table.csv"))
 # PGLS for temp range ----
 set.seed(10)
 temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat + fixer*abs_med_lat + 
-                      woody + uses_num_uses + annual,
+                      woody + uses_num_uses + annual+mean_wal_score,
                     data = subset(data, !is.na(temp_range)), 
                     correlation = corPagel(1, tree_pruned, form=~species), method = "ML")
 summary(temp_range)
@@ -140,7 +179,7 @@ write.csv(temp, here("tables/native_temp_allspecies_output_table.csv"))
 # PGLS for nitrogen range ----
 set.seed(10)
 nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat + fixer*abs_med_lat + 
-                    woody + uses_num_uses + annual,
+                    woody + uses_num_uses + annual + mean_wal_score,
                   data = subset(data, !is.na(nitro_range)), 
                   correlation = corPagel(1, tree_pruned, form=~species), method = "ML")
 summary(nitro_range)
@@ -210,6 +249,10 @@ intro_niche$fixer<-as.factor(intro_niche$fixer)
 intro_niche$abs_med_lat <- abs(intro_niche$median_lat)
 nat_niche$abs_med_lat <- abs(nat_niche$median_lat)
 
+#Add Wallacean shortfall
+nat_niche <- merge(nat_niche, species_wal_score[species_wal_score$intrdcd.x == 0, ], by.x="species", by.y="species")
+intro_niche <- merge(intro_niche, species_wal_score[species_wal_score$intrdcd.x == 1, ], by.x="species", by.y="species")
+
 kable(intro_niche %>% group_by(EFN) %>% summarize(n=n()))
 kable(intro_niche %>% group_by(fixer) %>% summarize(n=n()))
 
@@ -227,7 +270,7 @@ chisq.test(Nodtable)
 # PGLS of introduced precip breadth ----
 #hist(log(intro_niche$precip_range))
 
-intro_precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual,
+intro_precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                           data=intro_niche, 
                           correlation=corPagel(0.51, tree_pruned, form=~species, fixed=TRUE),
                           method="ML")
@@ -247,7 +290,7 @@ write.csv(precip_intro, "tables/intro_precip_output_table.csv")
 
 hist(intro_niche$temp_range)
 
-intro_temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual,
+intro_temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                         data=intro_niche, 
                         correlation=corPagel(0.60, tree_pruned, form=~species, fixed=TRUE), 
                         method="ML")
@@ -266,7 +309,7 @@ write.csv(temp_intro, "tables/intro_temp_output_table.csv")
 
 hist(log(intro_niche$nitro_range))
 
-intro_nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual,
+intro_nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                          data=intro_niche, 
                          correlation=corPagel(0.55, tree_pruned, form=~species, fixed=TRUE),
                          method="ML")
@@ -282,7 +325,7 @@ nitro_intro$p.value<-as.numeric(nitro_intro$p.value) %>% round(4)
 write.csv(nitro_intro, "tables/intro_nitro_output_table.csv")
 
 # PGLS of native precip breadth ----
-nat_precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual,
+nat_precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                         data=nat_niche, 
                         correlation=corPagel(0.51, tree_pruned, form=~species, fixed=TRUE),
                         method="ML")
@@ -297,7 +340,7 @@ precip_nat$p.value<-as.numeric(precip_nat$p.value) %>% round(4)
 write.csv(precip_nat, "tables/native_precip_output_table.csv")
 
 # PGLS of native temp breadth ---- 
-nat_temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual,
+nat_temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                       data=nat_niche, 
                       correlation=corPagel(0.60, tree_pruned, form=~species, fixed=TRUE),
                       method="ML")
@@ -314,7 +357,7 @@ temp_nat$p.value<-as.numeric(temp_nat$p.value) %>% round(4)
 write.csv(temp_nat, "tables/native_temp_output_table.csv")
 
 # PGLS of native nitro breadth ----
-nat_nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual,
+nat_nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                        data=nat_niche, 
                        correlation=corPagel(0.55, tree_pruned, form=~species, fixed=TRUE),
                        method="ML")

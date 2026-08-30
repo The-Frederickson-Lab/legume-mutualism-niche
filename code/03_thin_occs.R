@@ -63,7 +63,7 @@ p1 <- ggplot(data=check, aes(x=n_before, y=n_after))+geom_point(alpha=0.5)+geom_
   #scale_x_log10()+
   #scale_y_log10()
 p1
-save_plot(here("figures/occ_pre_post.pdf"), p1)
+save_plot(here("figures/FigureS1.pdf"), p1)
 
 # write out species list for later comparison
 

@@ -44,6 +44,8 @@ points_joined <- bind_rows(
   })
 )
 
+
+
 #Sometimes each occurrence matches more than one spatial polygon
 #Some polygons overlap slightly, generating this issue
 #We want to retain a single occurrence after the spatial join, so we will simply retain only
@@ -147,6 +149,9 @@ species_wal_score <- points_joined %>%
   group_by(species) %>%
   summarize(mean_wal_score = mean(wallacean_darkspot_score, na.rm=T))
 
+#Save Wallacean shortfall score
+write.csv(species_wal_score, "data/wallacean_shortfall.csv")
+
 #Add to species-level summary
 summary_df <- merge(summary_df, species_wal_score, by.x="species", by.y="species")
 
@@ -210,7 +215,7 @@ p2 <- ggplot(data=data,aes(x=n, y=temp_range))+
   scale_x_log10()+
   scale_y_log10()
 
-p3 <- ggplot(data=data,aes(x=n, y=nitro_range, color=human_uses, group=human_uses))+
+p3 <- ggplot(data=data,aes(x=n, y=nitro_range))+
   geom_point(alpha=0.3)+
   geom_smooth(method="lm")+
   theme_cowplot()+
