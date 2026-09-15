@@ -99,7 +99,7 @@ summary_df <- points %>%
           median_lat = median(Y.1, na.rm=T),
           median_long = median(X.1, na.rm=T),
           quant95 = quantile(Y.1, 0.95, na.rm=T),
-          quant005 = quantile(Y, 0.05, na.rm=T),
+          quant005 = quantile(Y.1, 0.05, na.rm=T),
           num_biome = length(unique(na.omit(biome))),
           biome = names(which.max(table(na.omit(biome))))
   ) %>% 
@@ -151,6 +151,7 @@ hist(residuals(precip_range))
 
 # Save as RDS file
 saveRDS(precip_range, here("model_fits/precip_niche_breadth_filters_native.rds"))
+#precip_range <- readRDS(here("model_fits/precip_niche_breadth_filters_native.rds"))
 
 # save model output
 precip<-data.frame(coef(summary(precip_range))) %>% format(scientific=F)
@@ -170,6 +171,7 @@ hist(residuals(temp_range))
 
 # Save as RDS file
 saveRDS(temp_range, here("model_fits/temp_niche_breadth_filters_native.rds"))
+#temp_range <- readRDS(here("model_fits/temp_niche_breadth_filters_native.rds"))
 
 # save model output
 temp<-data.frame(coef(summary(temp_range))) %>% format(scientific=F)
@@ -189,6 +191,7 @@ hist(residuals(nitro_range))
 
 # Save as RDS file
 saveRDS(nitro_range, here("model_fits/nitro_niche_breadth_filters_native.rds"))
+#nitro_range <- readRDS(here("model_fits/nitro_niche_breadth_filters_native.rds"))
 
 # save model output
 nitro<-data.frame(coef(summary(nitro_range))) %>% format(scientific=F)
@@ -272,7 +275,7 @@ chisq.test(Nodtable)
 
 intro_precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                           data=intro_niche, 
-                          correlation=corPagel(0.51, tree_pruned, form=~species, fixed=TRUE),
+                          correlation=corPagel(0.49, tree_pruned, form=~species, fixed=TRUE),
                           method="ML")
 
 summary(intro_precip_range)
@@ -292,7 +295,7 @@ hist(intro_niche$temp_range)
 
 intro_temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                         data=intro_niche, 
-                        correlation=corPagel(0.60, tree_pruned, form=~species, fixed=TRUE), 
+                        correlation=corPagel(0.61, tree_pruned, form=~species, fixed=TRUE), 
                         method="ML")
 summary(intro_temp_range)
 
@@ -311,7 +314,7 @@ hist(log(intro_niche$nitro_range))
 
 intro_nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                          data=intro_niche, 
-                         correlation=corPagel(0.55, tree_pruned, form=~species, fixed=TRUE),
+                         correlation=corPagel(0.54, tree_pruned, form=~species, fixed=TRUE),
                          method="ML")
 
 summary(intro_nitro_range)
@@ -327,7 +330,7 @@ write.csv(nitro_intro, "tables/intro_nitro_output_table.csv")
 # PGLS of native precip breadth ----
 nat_precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                         data=nat_niche, 
-                        correlation=corPagel(0.51, tree_pruned, form=~species, fixed=TRUE),
+                        correlation=corPagel(0.49, tree_pruned, form=~species, fixed=TRUE),
                         method="ML")
 summary(nat_precip_range)
 
@@ -342,7 +345,7 @@ write.csv(precip_nat, "tables/native_precip_output_table.csv")
 # PGLS of native temp breadth ---- 
 nat_temp_range <- gls(log(temp_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                       data=nat_niche, 
-                      correlation=corPagel(0.60, tree_pruned, form=~species, fixed=TRUE),
+                      correlation=corPagel(0.61, tree_pruned, form=~species, fixed=TRUE),
                       method="ML")
 
 summary(nat_temp_range)
@@ -359,7 +362,7 @@ write.csv(temp_nat, "tables/native_temp_output_table.csv")
 # PGLS of native nitro breadth ----
 nat_nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat+woody+uses_num_uses+annual+mean_wal_score,
                        data=nat_niche, 
-                       correlation=corPagel(0.55, tree_pruned, form=~species, fixed=TRUE),
+                       correlation=corPagel(0.54, tree_pruned, form=~species, fixed=TRUE),
                        method="ML")
 
 summary(nat_nitro_range)
