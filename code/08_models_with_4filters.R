@@ -8,6 +8,7 @@ library(ape)
 library(phytools)
 library(nlme)
 library(knitr)
+library(cowplot)
 
 #Read in thinned occurrence data with climate, nitrogen, and biome data
 points <- read.csv(here("data_large/allocc_thinned_env.csv"))
@@ -345,6 +346,7 @@ biome_number <- gls(num_biome ~ EFN*abs_med_lat+fixer*abs_med_lat
                     data = data, 
                     correlation=corPagel(1, mytree, form=~species), method="ML")
 summary(biome_number)
+summary(biome_number)$tTable
 plot(biome_number)
 hist(residuals(biome_number))
 qqnorm(biome_number, abline = c(0,1))
@@ -378,6 +380,7 @@ precip_range <- gls(log(precip_range) ~ EFN*abs_med_lat + fixer*abs_med_lat+
                     data = data, 
                     correlation = corPagel(1, tree_pruned, form=~species), method = "ML")
 summary(precip_range)
+summary(precip_range)$tTable
 plot(precip_range)
 qqnorm(precip_range, abline = c(0,1))
 hist(residuals(precip_range))
@@ -431,13 +434,14 @@ logtemp_range <- gls(log(temp_range) ~ EFN*abs_med_lat + fixer*abs_med_lat +
                   correlation = corPagel(1, mytree, form=~species), method = "ML")
 
 summary(logtemp_range)
+summary(logtemp_range)$tTable
 plot(logtemp_range)
 qqnorm(logtemp_range, abline = c(0,1))
 hist(residuals(logtemp_range))
 
 # Save as RDS file
 saveRDS(logtemp_range, here("model_fits/logtemp_niche_breadth_filters.rds"))
-#logtemp_range<-readRDS(here("model_fits/logtemp_niche_breadth_filters.rds"))
+logtemp_range<-readRDS(here("model_fits/logtemp_niche_breadth_filters.rds"))
 
 # save model output
 logtemp_df <- data.frame(coef(summary(logtemp_range))) %>% format(scientific = F)
@@ -463,6 +467,7 @@ nitro_range <- gls(log(nitro_range) ~ EFN*abs_med_lat+fixer*abs_med_lat +
                    correlation = corPagel(1, mytree, form=~species), method = "ML")
 
 summary(nitro_range)
+summary(nitro_range)$tTable
 plot(nitro_range)
 qqnorm(nitro_range, abline = c(0,1))
 hist(residuals(nitro_range))

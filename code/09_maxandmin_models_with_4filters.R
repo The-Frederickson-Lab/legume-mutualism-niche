@@ -30,7 +30,7 @@ precip_maxquant <- gls(log(precip_maxquant) ~ EFN*abs_med_lat+
                        correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(precip_maxquant)
-
+summary(precip_maxquant)$tTable
 plot(precip_maxquant)
 hist(residuals(precip_maxquant))
 qqnorm(precip_maxquant, abline = c(0,1))
@@ -66,6 +66,7 @@ temp_maxquant <- gls(temp_maxquant ~ EFN*abs_med_lat+
                      correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(temp_maxquant)
+summary(temp_maxquant)$tTable
 hist(residuals(temp_maxquant))
 qqnorm(temp_maxquant, abline = c(0,1))
 plot(temp_maxquant)
@@ -102,7 +103,7 @@ nitro_maxquant <- gls(log(nitro_maxquant) ~ EFN*abs_med_lat+
                       correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(nitro_maxquant)
-
+summary(nitro_maxquant)$tTable
 plot(nitro_maxquant)
 hist(residuals(nitro_maxquant))
 qqnorm(nitro_maxquant, abline = c(0,1))
@@ -142,7 +143,7 @@ precip_minquant <- gls(log(precip_minquant) ~ EFN*abs_med_lat+
                        correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(precip_minquant)
-
+summary(precip_minquant)$tTable
 plot(precip_minquant)
 hist(residuals(precip_minquant))
 qqnorm(precip_minquant, abline = c(0,1))
@@ -177,6 +178,7 @@ temp_minquant <- gls(temp_minquant ~ EFN*abs_med_lat+
                      correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(temp_minquant)
+summary(temp_minquant)$tTable
 hist(residuals(temp_minquant))
 qqnorm(temp_minquant, abline = c(0,1))
 plot(temp_minquant)
@@ -213,7 +215,7 @@ nitro_minquant <- gls(log(nitro_minquant) ~ EFN*abs_med_lat +
                       correlation=corPagel(1, mytree, form=~species), method="ML")
 
 summary(nitro_minquant)
-
+summary(nitro_minquant)$tTable
 plot(nitro_minquant)
 hist(residuals(nitro_minquant))
 qqnorm(nitro_minquant, abline = c(0,1))
