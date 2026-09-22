@@ -58,8 +58,8 @@ p1 <- ggplot()+
   scale_colour_manual(values=c("#4D4D4D", "#0072B2"), labels=c("No", "Yes"))+
   ylab("Biome count")+
   xlab("Latitude (\u00B0)")+
-  geom_line(data=EFN_biome_means %>% filter(!(group=="0" & x>max_noEFN)) %>% filter(!(group=="1" & x > max_EFN)), aes(x=x, y=predicted, colour=group), linewidth=1.4)+
-  annotate("text", label=paste0("EFN: ", sig_EFN, "\nInt: ", sig_EFNint), x=x_pos, y=y_pos, lineheight = .75, hjust=0)
+  geom_line(data=EFN_biome_means %>% filter(!(group=="0" & x>max_noEFN)) %>% filter(!(group=="1" & x > max_EFN)), aes(x=x, y=predicted, colour=group), linewidth=1.4)
+  #annotate("text", label=paste0("EFN: ", sig_EFN, "\nInt: ", sig_EFNint), x=x_pos, y=y_pos, lineheight = .75, hjust=0)
 p1
 
 #Make sure group is a factor
@@ -79,8 +79,8 @@ p2 <- ggplot()+
   ylab("Biome count")+
   xlab("Latitude (\u00B0)")+
   labs(colour="Rhizobia")+
-  geom_line(data=fixer_biome_means %>% filter(!(group=="0" & x>max_nofixer)) %>% filter(!(group=="1" & x > max_fixer)), aes(x=x, y=predicted, colour=group), linewidth=1.4)+
-  annotate("text", label=paste0("Rhizobia: ", sig_fix, "\nInt: ", sig_fixint), x=x_pos, y=y_pos, lineheight = .75, hjust=0)
+  geom_line(data=fixer_biome_means %>% filter(!(group=="0" & x>max_nofixer)) %>% filter(!(group=="1" & x > max_fixer)), aes(x=x, y=predicted, colour=group), linewidth=1.4)
+  #annotate("text", label=paste0("Rhizobia: ", sig_fix, "\nInt: ", sig_fixint), x=x_pos, y=y_pos, lineheight = .75, hjust=0)
 p2
 
 # Make histogram showing distribution of species by latitude and mutualism ----
@@ -100,9 +100,12 @@ p3 <-data %>%
 
 
 #Make multi-panel plot
-p4 <- cowplot::plot_grid(p3, p1, p2, nrow=3, align = "v", axis = "lr", labels=c("AUTO"))
+p4_raw <- cowplot::plot_grid(p3, p1, p2, nrow=3, align = "v", axis = "lr", labels=c("AUTO"))
+p4_spaced <- plot_grid(NULL, p4_raw, ncol = 1, rel_heights = c(0.05, 1))
+p4 <- ggdraw(p4_spaced) + 
+  draw_figure_label(label = "Figure 2", position = "top.left")
 p4
 
 #Save final Figure 2
-save_plot("figures/Figure2.pdf", p4, base_height = 8, base_width = 6)
+save_plot("figures/Figure2.pdf", p4, base_height = 8, base_width = 6, dpi=600)
 
