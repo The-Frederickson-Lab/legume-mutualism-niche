@@ -30,8 +30,8 @@ precip_log <- log1p(precip)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
 #Some example species
-#example_species <- "Acacia_melanoxylon"
-example_species <- "Cytisus_scoparius"
+example_species <- "Acacia_melanoxylon"
+#example_species <- "Cytisus_scoparius"
 #example_species <- "Lupinus_nootkatensis"
 example_df <- subset(points, species==example_species)
 
@@ -211,9 +211,12 @@ nitro_dist_1 <- ggplot()+
 nitro_dist_1
 
 #Combine 
-figure1 <- plot_grid(map2, temp_dist_1, map4,  precip_dist_1, map6, nitro_dist_1, align = "v", axis = "lr", nrow = 3, labels="AUTO", rel_widths=c(2,1,2,1,2,1))
+figure1_raw <- plot_grid(map2, temp_dist_1, map4,  precip_dist_1, map6, nitro_dist_1, align = "v", axis = "lr", nrow = 3, labels="AUTO", rel_widths=c(2,1,2,1,2,1))
+figure1_spaced <- plot_grid(NULL, figure1_raw, ncol = 1, rel_heights = c(0.05, 1))
+figure1 <- ggdraw(figure1_spaced) + 
+  draw_figure_label(label = "Figure 1", position = "top.left")
 figure1
 
 #Save
 full_plot_name <- paste0("figures/", example_species, "_niche_breadth.pdf")
-save_plot(full_plot_name, figure1, base_width =14, base_height=8)
+save_plot(full_plot_name, figure1, base_width =14, base_height=8, dpi=600)
