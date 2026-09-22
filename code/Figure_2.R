@@ -15,7 +15,6 @@ data$abs_med_lat <- as.numeric(data$abs_med_lat)
 #Read in model predictions from script 08
 EFN_biome_means <- read.csv(here("tables/biome_EFN_predictions.csv"))
 fixer_biome_means <- read.csv(here("tables/biome_fixer_predictions.csv"))
-biome_stats <- read.csv(here("tables/biome_number_output_table.csv"))
 
 #Set seed for reproducibility
 set.seed(10)
@@ -27,28 +26,6 @@ EFN_biome_means$group <- as.factor(EFN_biome_means$group)
 max_noEFN <- max(data[data$EFN == 0, "abs_med_lat"])
 max_EFN <- max(data[data$EFN == 1, "abs_med_lat"])
 
-#Set position of p-values inset
-x_pos <- 55
-y_pos <- 12
-
-#Extract p-values from model results for plotting asterixes on figure
-sig_EFN <- ifelse(biome_stats[biome_stats$X == "EFN1", "p.value"] <= 0.05 & biome_stats[biome_stats$X == "EFN1", "p.value"] >= 0.01, "*", 
-                  ifelse(biome_stats[biome_stats$X == "EFN1", "p.value"] <= 0.01 & biome_stats[biome_stats$X == "EFN1", "p.value"] >= 0.001, "**", 
-                         ifelse(biome_stats[biome_stats$X == "EFN1", "p.value"] <= 0.001, "***", 
-                  "NS")))
-sig_EFNint <- ifelse(biome_stats[biome_stats$X == "EFN1:abs_med_lat", "p.value"] <= 0.05 & biome_stats[biome_stats$X == "EFN1:abs_med_lat", "p.value"] >= 0.01, "*", 
-                     (ifelse(biome_stats[biome_stats$X == "EFN1:abs_med_lat", "p.value"] <= 0.01 & biome_stats[biome_stats$X == "EFN1:abs_med_lat", "p.value"] >= 0.001, "**", 
-                            (ifelse(biome_stats[biome_stats$X == "EFN1:abs_med_lat", "p.value"] <= 0.001, "***", 
-                     "NS")))))
-sig_fix <- ifelse(biome_stats[biome_stats$X == "fixer1", "p.value"] <= 0.05 & biome_stats[biome_stats$X == "fixer1", "p.value"] >= 0.01, "*", 
-                  ifelse(biome_stats[biome_stats$X == "fixer1", "p.value"] <= 0.01 & biome_stats[biome_stats$X == "fixer1", "p.value"] >= 0.001, "**", 
-                         ifelse(biome_stats[biome_stats$X == "fixer1", "p.value"] <= 0.001, "***", 
-                                "NS")))
-sig_fixint <- ifelse(biome_stats[biome_stats$X == "abs_med_lat:fixer1", "p.value"] <= 0.05 & biome_stats[biome_stats$X == "abs_med_lat:fixer1", "p.value"] >= 0.01, "*", 
-                     (ifelse(biome_stats[biome_stats$X == "abs_med_lat:fixer1", "p.value"] <= 0.01 & biome_stats[biome_stats$X == "abs_med_lat:fixer1", "p.value"] >= 0.001, "**", 
-                             (ifelse(biome_stats[biome_stats$X == "abs_med_lat:fixer1", "p.value"] <= 0.001, "***", 
-                                     "NS")))))
-
 #Make figure
 p1 <- ggplot()+
   geom_point(data=data %>% slice_sample(prop = 0.25), aes(x=abs_med_lat, y=num_biome, color=EFN, alpha=EFN, shape=EFN), size=1.5)+
@@ -59,7 +36,6 @@ p1 <- ggplot()+
   ylab("Biome count")+
   xlab("Latitude (\u00B0)")+
   geom_line(data=EFN_biome_means %>% filter(!(group=="0" & x>max_noEFN)) %>% filter(!(group=="1" & x > max_EFN)), aes(x=x, y=predicted, colour=group), linewidth=1.4)
-  #annotate("text", label=paste0("EFN: ", sig_EFN, "\nInt: ", sig_EFNint), x=x_pos, y=y_pos, lineheight = .75, hjust=0)
 p1
 
 #Make sure group is a factor
@@ -80,7 +56,6 @@ p2 <- ggplot()+
   xlab("Latitude (\u00B0)")+
   labs(colour="Rhizobia")+
   geom_line(data=fixer_biome_means %>% filter(!(group=="0" & x>max_nofixer)) %>% filter(!(group=="1" & x > max_fixer)), aes(x=x, y=predicted, colour=group), linewidth=1.4)
-  #annotate("text", label=paste0("Rhizobia: ", sig_fix, "\nInt: ", sig_fixint), x=x_pos, y=y_pos, lineheight = .75, hjust=0)
 p2
 
 # Make histogram showing distribution of species by latitude and mutualism ----
