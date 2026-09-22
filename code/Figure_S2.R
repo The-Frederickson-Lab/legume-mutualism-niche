@@ -11,6 +11,7 @@ library(ggeffects)
 library(ggtree)
 library(ggnewscale)
 library(knitr)
+library(viridis)
 
 #Read in data
 data <- read.csv("data/pgls_species_data.csv")
@@ -59,4 +60,4 @@ p4 <- gheatmap(p3 + new_scale_fill(), tree_data_2, width=0.15, offset=14, color=
   scale_fill_manual(values = c("#4D4D4D", "#C44E52"), name="Rhizobia")
 p4
 
-ggsave(here("figures/FigureS1.pdf"), p4)
+ggsave(here("figures/FigureS2.pdf"), p4, dpi=600)
